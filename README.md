@@ -21,10 +21,21 @@
 
 1. **[QMK Toolbox herunterladen](https://github.com/qmk/qmk_toolbox/releases)** und starten
 2. Oben rechts die passende `.bin`-Datei laden (**Open** → Datei auswählen)
-3. Tastatur in den **Bootloader-Modus** versetzen:
-   - Tastatur anstecken (oder bereits angesteckt)
+3. Tastatur in den **Bootloader-Modus** versetzen – je nach Hardware-Revision gibt es zwei Methoden:
+
+   **Methode A – ältere Revisionen (Tastatur bereits angesteckt):**
    - **FN + ESC** drücken
-   - Alternativ: Reset-Taster auf der Rückseite der Tastatur
+   - Alternativ: Reset-Taster auf der Rückseite der Tastatur drücken
+
+   **Methode B – neuere Revisionen (Tastatur noch nicht angesteckt):**
+   - **Leertaste + B** gleichzeitig gedrückt halten
+   - Tastatur dabei per USB anstecken
+   - Tasten erst loslassen, wenn QMK Toolbox die Verbindung meldet
+
+   > ℹ️ Wenn **FN + ESC** keine Reaktion zeigt, ist Methode B die richtige Wahl.
+   > Beide Methoden funktionieren bei P96 und P65 gleich.
+   > Auch der offizielle [Glorious QMK Installation Guide](https://www.gloriousgaming.com/en-eu/blogs/guides-resources/gmmk-2-qmk-installation-guide) beschreibt **Space + B** als primäre Methode.
+
 4. QMK Toolbox zeigt im Log: `WB32 DFU device connected`
 5. **Flash** klicken – fertig!
 
