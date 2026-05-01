@@ -10,12 +10,25 @@
 
 ### Firmware-Dateien
 
-| Modell | Download |
-|---|---|
-| **GMMK2 96% ISO** | [`gmmk_gmmk2_p96_iso_iso_de_custom.bin`](firmware/gmmk_gmmk2_p96_iso_iso_de_custom.bin) |
-| **GMMK2 65% ISO** | [`gmmk_gmmk2_p65_iso_iso_de_custom.bin`](firmware/gmmk_gmmk2_p65_iso_iso_de_custom.bin) |
+| Modell | Variante | Download |
+|---|---|---|
+| **GMMK2 96% ISO** | Standard | [`gmmk_gmmk2_p96_iso_iso_de_custom.bin`](firmware/gmmk_gmmk2_p96_iso_iso_de_custom.bin) |
+| **GMMK2 96% ISO** | **Entf-Variante** *(empfohlen)* | [`gmmk_gmmk2_p96_iso_iso_de_custom-new-entf.bin`](firmware/gmmk_gmmk2_p96_iso_iso_de_custom-new-entf.bin) |
+| **GMMK2 65% ISO** | Standard | [`gmmk_gmmk2_p65_iso_iso_de_custom.bin`](firmware/gmmk_gmmk2_p65_iso_iso_de_custom.bin) |
 
 > ⚠️ **Achtung:** Nur für die **ISO**-Varianten. Für ANSI-Layouts ist diese Firmware nicht geeignet.
+
+#### 🗑️ Entf-Variante (P96): Intuitivere Tastenpositionen
+
+Die Standard-Firmware belegt die drei Tasten rechts neben F12 in der Reihenfolge **Druck | Entf | Einfg**, wie es werkseitig auf 96%-Tastaturen üblich ist. Da die **Entf-Taste** im Alltag jedoch bei weitem am häufigsten gebraucht wird, bietet die Entf-Variante eine ergonomischere Anordnung:
+
+| Position | Standard-Variante | Entf-Variante |
+|---|---|---|
+| Taste direkt nach F12 | Druck (Print Screen) | **Entf (Delete)** ✅ |
+| Mittlere Taste | Entf (Delete) | Einfg (Insert) |
+| Letzte Taste vor PgUp | Einfg (Insert) | Druck (Print Screen) |
+
+Alle anderen Features (RGB, EEPROM-Persistenz, FN-Layer, Num Lock Indikator usw.) sind identisch mit der Standard-Variante.
 
 ### Flashen mit QMK Toolbox
 
@@ -238,7 +251,13 @@ Legende: — = transparent  |  Brit+/- = Helligkeit +/–  |  Prev/Next C = Basi
 
 ## 🛠️ Selbst kompilieren
 
-Die Keymap-Quelldateien liegen in den Ordnern [`keymap_p96/`](keymap_p96/) und [`keymap_p65/`](keymap_p65/).
+Die Keymap-Quelldateien liegen in den folgenden Ordnern:
+
+| Ordner | Beschreibung |
+|---|---|
+| [`keymap_p96/`](keymap_p96/) | P96 Standard (Druck \| Entf \| Einfg) |
+| [`keymap_p96_entf/`](keymap_p96_entf/) | P96 Entf-Variante (Entf \| Einfg \| Druck) |
+| [`keymap_p65/`](keymap_p65/) | P65 Standard |
 
 Als Basis-Repository wird der Fork von GloriousThrall benötigt, da nur dieser die korrekten RGB-Matrix-Treiber für den AW20216S-LED-Controller enthält:
 
@@ -253,13 +272,16 @@ cd qmk_firmware
 git submodule update --init --recursive lib/lufa
 
 # 2. Keymap-Ordner kopieren
-#    Für P96:
-cp -r /pfad/zu/keymap_p96  keyboards/gmmk/gmmk2/p96/iso/keymaps/iso_de_custom
+#    Für P96 Standard:
+cp -r /pfad/zu/keymap_p96      keyboards/gmmk/gmmk2/p96/iso/keymaps/iso_de_custom
+#    Für P96 Entf-Variante:
+cp -r /pfad/zu/keymap_p96_entf keyboards/gmmk/gmmk2/p96/iso/keymaps/iso_de_custom_entf
 #    Für P65:
-cp -r /pfad/zu/keymap_p65  keyboards/gmmk/gmmk2/p65/iso/keymaps/iso_de_custom
+cp -r /pfad/zu/keymap_p65      keyboards/gmmk/gmmk2/p65/iso/keymaps/iso_de_custom
 
 # 3. Kompilieren
 qmk compile -kb gmmk/gmmk2/p96/iso -km iso_de_custom
+qmk compile -kb gmmk/gmmk2/p96/iso -km iso_de_custom_entf
 qmk compile -kb gmmk/gmmk2/p65/iso -km iso_de_custom
 ```
 
