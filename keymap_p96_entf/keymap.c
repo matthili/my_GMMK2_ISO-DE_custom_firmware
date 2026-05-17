@@ -57,6 +57,9 @@ static uint32_t ins_press_time = 0;
 static bool     ins_key_held   = false;
 static uint8_t  ins_row = 0, ins_col = 0;
 
+/* FN-layer highlight: suppressed once a cursor key is pressed while FN held */
+static bool fn_highlight_active = true;
+
 static uint8_t calc_pulse_brightness(uint32_t elapsed) {
     if (elapsed >= PULSE_DURATION_MS) return 0;
     uint32_t cycle_len = PULSE_DURATION_MS / PULSE_COUNT;
@@ -80,6 +83,13 @@ void keyboard_post_init_user(void) {
     user_config.raw = eeconfig_read_user();
     if (user_config.color_idx >= BASE_COLOR_COUNT) user_config.color_idx = 0;
     base_color_idx = user_config.color_idx;
+}
+
+layer_state_t layer_state_set_user(layer_state_t state) {
+    if (layer_state_cmp(state, _FL)) {
+        fn_highlight_active = true;
+    }
+    return state;
 }
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -123,13 +133,19 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (record->event.pressed) {
         switch (keycode) {
             case RGB_BASE_NEXT:
+                fn_highlight_active = false;
                 base_color_idx = (base_color_idx + 1) % BASE_COLOR_COUNT;
                 user_config.color_idx = base_color_idx; eeconfig_update_user(user_config.raw);
                 return false;
             case RGB_BASE_PREV:
+                fn_highlight_active = false;
                 base_color_idx = (base_color_idx == 0) ? (BASE_COLOR_COUNT - 1) : (base_color_idx - 1);
                 user_config.color_idx = base_color_idx; eeconfig_update_user(user_config.raw);
                 return false;
+            case RM_VALU:
+            case RM_VALD:
+                fn_highlight_active = false;
+                break;
             case KC_CAPS:
                 if (led != NO_LED) start_pulse(&caps_pulse, led, !!host_keyboard_led_state().caps_lock);
                 break;
@@ -174,7 +190,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     uint8_t base_b = (uint8_t)((uint16_t)bc.b * val / 255);
     bool backlight_on = (base_r > 0 || base_g > 0 || base_b > 0);
 
-    if (layer_state_is(_FL)) {
+    if (layer_state_is(_FL) && fn_highlight_active) {
         for (uint8_t i = led_min; i < led_max; i++) rgb_matrix_set_color(i, 0, 0, 0);
         for (uint8_t r = 0; r < MATRIX_ROWS; r++) {
             for (uint8_t c = 0; c < MATRIX_COLS; c++) {
