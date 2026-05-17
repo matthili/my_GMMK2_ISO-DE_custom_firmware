@@ -13,7 +13,7 @@
 | Modell | Variante | Download |
 |---|---|---|
 | **GMMK2 96% ISO** | Standard | [`gmmk_gmmk2_p96_iso_iso_de_custom.bin`](firmware/gmmk_gmmk2_p96_iso_iso_de_custom.bin) |
-| **GMMK2 96% ISO** | **Entf-Variante** *(empfohlen)* | [`gmmk_gmmk2_p96_iso_iso_de_custom-new-entf.bin`](firmware/gmmk_gmmk2_p96_iso_iso_de_custom-new-entf.bin) |
+| **GMMK2 96% ISO** | **Entf-Variante** *(empfohlen)* | [`gmmk_gmmk2_p96_iso_iso_de_custom_entf.bin`](firmware/gmmk_gmmk2_p96_iso_iso_de_custom_entf.bin) |
 | **GMMK2 65% ISO** | Standard | [`gmmk_gmmk2_p65_iso_iso_de_custom.bin`](firmware/gmmk_gmmk2_p65_iso_iso_de_custom.bin) |
 
 > ⚠️ **Achtung:** Nur für die **ISO**-Varianten. Für ANSI-Layouts ist diese Firmware nicht geeignet.
@@ -103,10 +103,37 @@ Viele Schalter prellen bis zu 20 ms und verursachen dabei Doppeleingaben. Der QM
 
 > Die Reaktiv-Effekte sind *immer* aktiv – auch im Basisfarben-Modus „Aus" (Index 9).
 
+### 🔴🟢 Lock-Tasten Puls-Indikatoren
+
+Die Lock-Tasten signalisieren Zustandswechsel mit einer Puls-Animation (5× pulsierend über 3 Sekunden).
+
+> **Normalzustand:** Caps Lock = AUS, Num Lock = AN, Insert = AN (Einfüge-Modus)
+
+| Taste | Weg vom Normal (→ Rot) | Zurück zum Normal (→ Grün) | Danach |
+|---|---|---|---|
+| **Caps Lock** | AN → 5× rot pulsierend | AUS → 5× grün pulsierend | Abnormal: LED aus · Normal: Basisfarbe |
+| **Num Lock** *(nur P96)* | AUS → 5× rot pulsierend | AN → 5× grün pulsierend | Abnormal: LED aus · Normal: Basisfarbe |
+| **Insert** *(nur P96)* | AUS (Überschreiben) → 5× rot | AN (Einfügen) → 5× grün | Abnormal: LED aus · Normal: Basisfarbe |
+
+> Die Puls-Animation funktioniert auch bei ausgeschalteter Hintergrundbeleuchtung.
+> Das Pulsieren erfolgt zwischen Farbe und Schwarz.
+
+**Insert-Taste Langdruck (nur P96):** Da der Insert-Zustand vom Betriebssystem nicht zurückgemeldet wird, trackt die Firmware den Zustand selbst (Standard: AN). Falls das Tracking aus dem Takt gerät, kann man die Insert-Taste **2 Sekunden lang gedrückt halten** um den Tracking-Wert auf „AN“ (Einfüge-Modus) zurückzusetzen. Ein langer Tastendruck sendet dabei kein Insert-Signal an den Computer.
+
+### 🔦 FN-Layer Beleuchtung
+
+Beim Gedrückthalten der FN-Taste werden nur die Tasten beleuchtet, die im FN-Layer eine Funktion haben:
+
+| Hintergrundbeleuchtung | Verhalten bei FN gedrückt |
+|---|---|
+| **AN** | Nur FN-belegte Tasten leuchten in der Basisfarbe, alle anderen aus |
+| **AUS** | FN-belegte Tasten leuchten grün, alle anderen bleiben aus |
+
+Beim Loslassen der FN-Taste kehrt die Beleuchtung sofort zum Normalzustand zurück.
+
 ### 🔢 Num Lock Indikator *(nur P96)*
 - Num Lock **AN** → Die Num-Lock-Taste leuchtet in der gewählten Basisfarbe
 - Num Lock **AUS** → Die Num-Lock-Taste ist dunkel
-
 ---
 
 ## 🔄 Original-Firmware wiederherstellen
